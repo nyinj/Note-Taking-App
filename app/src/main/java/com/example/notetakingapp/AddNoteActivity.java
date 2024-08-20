@@ -1,46 +1,54 @@
 package com.example.notetakingapp;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 
-import io.realm.kotlin.Realm;
-
-
 public class AddNoteActivity extends AppCompatActivity {
+
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_note);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         EditText titleInput = findViewById(R.id.titleinput);
         EditText descriptionInput = findViewById(R.id.descriptioninput);
         MaterialButton saveBtn = findViewById(R.id.savebtn);
 
-        Realm.init(getApplicationContext());
-        Realm realm = Realm.getDefaultInstance();
+        dbHelper = new DatabaseHelper(this);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                String title = titleInput.getText().toString();
+                String description = descriptionInput.getText().toString();
+                long createdTime = System.currentTimeMillis();
 
+                // Insert note into the SQLite database
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(DatabaseHelper.COLUMN_TITLE, title);
+                values.put(DatabaseHelper.COLUMN_DESCRIPTION, description);
+                values.put(DatabaseHelper.COLUMN_CREATED_TIME, createdTime);
+
+                long newRowId = db.insert(DatabaseHelper.TABLE_NOTES, null, values);
+
+                if (newRowId != -1) {
+                    Toast.makeText(getApplicationContext(), "Note saved", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error saving note", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
     }
 }

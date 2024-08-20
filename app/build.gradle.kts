@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-
-
 }
 
 android {
@@ -38,9 +36,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.library.base)
     testImplementation(libs.junit)
-    implementation(libs.realm)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

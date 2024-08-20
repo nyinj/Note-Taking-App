@@ -1,11 +1,31 @@
 package com.example.notetakingapp;
 
-import io.realm.kotlin.types.RealmObject;
+public class Note {
 
-public class Note implements RealmObject {
-    String title;
-    String description;
-    long createdTime;
+    private long id;
+    private String title;
+    private String description;
+    private long createdTime;
+
+    // Constructor
+    public Note() {
+    }
+
+    public Note(long id, String title, String description, long createdTime) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.createdTime = createdTime;
+    }
+
+    // Getters and Setters
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -31,5 +51,3 @@ public class Note implements RealmObject {
         this.createdTime = createdTime;
     }
 }
-
-
