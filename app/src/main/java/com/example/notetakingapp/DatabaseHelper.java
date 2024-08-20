@@ -1,8 +1,13 @@
 package com.example.notetakingapp;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -39,4 +44,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
         onCreate(db);
     }
+
+    // Insert a note into the database
+    public long insertNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TITLE, note.getTitle());
+        values.put(COLUMN_DESCRIPTION, note.getDescription());
+        values.put(COLUMN_CREATED_TIME, note.getCreatedTime());
+
+        return db.insert(TABLE_NOTES, null, values);
+    }
+
+    // Get all notes from the database
+    public List<Note> getAllNotes() {
+        List<Note> notes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NOTES, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Note note = new Note(
+                        cursor.getLong(cursor.getColumnIndex(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
+                        cursor.getLong(cursor.getColumnIndex(COLUMN_CREATED_TIME))
+                );
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return notes;
+    }
+
+    // Update a note
+    public int updateNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TITLE, note.getTitle());
+        values.put(COLUMN_DESCRIPTION, note.getDescription());
+        values.put(COLUMN_CREATED_TIME, note.getCreatedTime());
+
+        return db.update(TABLE_NOTES, values, COLUMN_ID + " = ?", new String[]{String.valueOf(note.getId())});
+    }
+
+    // Delete a note
+    public void deleteNote(long noteId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NOTES, COLUMN_ID + " = ?", new String[]{String.valueOf(noteId)});
+    }
+
 }
