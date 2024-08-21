@@ -16,6 +16,9 @@
         android:id="@+id/notestitle"
         android:text="NOTES"
         android:textSize="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
         android:textStyle="bold"
         android:textColor="@color/white"
         />

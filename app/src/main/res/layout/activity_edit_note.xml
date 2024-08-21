@@ -10,11 +10,12 @@
     android:background="#2d2f30"
     android:padding="20dp">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/titletextview"
-        android:text="Add new note"
+        android:text="Edit note"
         android:textColor="@color/white"
         android:textSize="25dp"
         android:textStyle="bold"
@@ -71,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/white"
-            android:text="Save"
+            android:text="Save Changes"
             android:textColor="#2d2f30" />
     </LinearLayout>
 

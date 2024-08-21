@@ -11,6 +11,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE_ADD_NOTE = 1;
+
     private DatabaseHelper dbHelper;
     private MyAdapter myAdapter;
 
@@ -27,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
         addNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddNoteActivity.class));
+                Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
             }
         });
 
@@ -39,14 +42,19 @@ public class MainActivity extends AppCompatActivity {
         List<Note> notesList = dbHelper.getAllNotes();
         myAdapter = new MyAdapter(this, notesList);
         recyclerView.setAdapter(myAdapter);
+    }
 
-        // Optional: Implement a way to refresh the list if needed
-        // For example, if you're adding or deleting notes in AddNoteActivity
-        // you might need to refresh the list here manually
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_ADD_NOTE && resultCode == RESULT_OK) {
+            refreshNotesList();
+        }
     }
 
     // Call this method to refresh the notes list after adding or deleting notes
-    public void refreshNotesList() {
+    private void refreshNotesList() {
         List<Note> updatedNotesList = dbHelper.getAllNotes();
         myAdapter.updateNotes(updatedNotesList);
     }

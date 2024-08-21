@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.button.MaterialButton;
 
 public class AddNoteActivity extends AppCompatActivity {
@@ -44,6 +42,8 @@ public class AddNoteActivity extends AppCompatActivity {
 
                 if (newRowId != -1) {
                     Toast.makeText(getApplicationContext(), "Note saved", Toast.LENGTH_SHORT).show();
+                    // Set result to indicate a new note was added
+                    setResult(RESULT_OK);
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Error saving note", Toast.LENGTH_SHORT).show();

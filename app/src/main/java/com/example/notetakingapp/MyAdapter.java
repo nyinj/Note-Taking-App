@@ -1,10 +1,12 @@
 package com.example.notetakingapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,17 +26,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyAdapter(Context context, List<Note> notesList) {
         this.context = context;
         this.notesList = notesList;
-        this.dbHelper = new DatabaseHelper(context); // Initialize DatabaseHelper
+        this.dbHelper = new DatabaseHelper(context);
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.item_view, parent, false));
+        View view = LayoutInflater.from(context).inflate(R.layout.item_view, parent, false);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Note note = notesList.get(position);
         holder.titleOutput.setText(note.getTitle());
         holder.descriptionOutput.setText(note.getDescription());
@@ -42,21 +45,28 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         String formattedTime = DateFormat.getDateTimeInstance().format(note.getCreatedTime());
         holder.timeOutput.setText(formattedTime);
 
-        holder.itemView.setOnLongClickListener(v -> {
+        holder.overflowMenu.setOnClickListener(v -> {
             PopupMenu menu = new PopupMenu(context, v);
-            menu.getMenu().add("DELETE");
+            menu.getMenuInflater().inflate(R.menu.note_menu, menu.getMenu());
             menu.setOnMenuItemClickListener(item -> {
-                if (item.getTitle().equals("DELETE")) {
-                    // Delete the note from SQLite
+                if (item.getItemId() == R.id.action_edit) {
+                    // Handle edit action
+                    Intent intent = new Intent(context, EditNoteActivity.class);
+                    intent.putExtra("NOTE_ID", note.getId());
+                    context.startActivity(intent);
+                    return true;
+                } else if (item.getItemId() == R.id.action_delete) {
+                    // Handle delete action
                     dbHelper.deleteNote(note.getId());
-                    notesList.remove(position); // Remove from the list
-                    notifyItemRemoved(position); // Notify adapter of the change
+                    notesList.remove(position);
+                    notifyItemRemoved(position);
                     Toast.makeText(context, "Note deleted", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else {
+                    return false;
                 }
-                return true;
             });
             menu.show();
-            return true;
         });
     }
 
@@ -74,12 +84,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         TextView titleOutput;
         TextView descriptionOutput;
         TextView timeOutput;
+        ImageView overflowMenu;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             titleOutput = itemView.findViewById(R.id.titleoutput);
             descriptionOutput = itemView.findViewById(R.id.descriptionoutput);
             timeOutput = itemView.findViewById(R.id.timeoutput);
+            overflowMenu = itemView.findViewById(R.id.overflow_menu);
         }
     }
 }

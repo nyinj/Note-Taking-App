@@ -56,6 +56,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NOTES, null, values);
     }
 
+    public Note getNoteById(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                TABLE_NOTES,
+                new String[]{COLUMN_ID, COLUMN_TITLE, COLUMN_DESCRIPTION, COLUMN_CREATED_TIME},
+                COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)},
+                null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            Note note = new Note(
+                    cursor.getLong(cursor.getColumnIndex(COLUMN_ID)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
+                    cursor.getLong(cursor.getColumnIndex(COLUMN_CREATED_TIME))
+            );
+            cursor.close();
+            return note;
+        } else {
+            return null;
+        }
+    }
+
     // Get all notes from the database
     public List<Note> getAllNotes() {
         List<Note> notes = new ArrayList<>();
