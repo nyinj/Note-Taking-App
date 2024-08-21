@@ -82,24 +82,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Get all notes from the database
     public List<Note> getAllNotes() {
-        List<Note> notes = new ArrayList<>();
+        List<Note> notesList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NOTES, null, null, null, null, null, null);
+        String selectQuery = "SELECT * FROM " + TABLE_NOTES + " ORDER BY " + COLUMN_CREATED_TIME + " DESC";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
+                // Suppress warnings for this specific usage
+                @SuppressWarnings("Range")
                 Note note = new Note(
-                        cursor.getLong(cursor.getColumnIndex(COLUMN_ID)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
-                        cursor.getLong(cursor.getColumnIndex(COLUMN_CREATED_TIME))
+                        cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION)),
+                        cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_CREATED_TIME))
                 );
-                notes.add(note);
+                notesList.add(note);
             } while (cursor.moveToNext());
         }
+
         cursor.close();
-        return notes;
+        return notesList;
     }
+
 
     // Update a note
     public int updateNote(Note note) {

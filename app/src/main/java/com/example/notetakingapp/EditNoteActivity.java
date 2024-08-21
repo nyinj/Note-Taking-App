@@ -55,5 +55,7 @@ public class EditNoteActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error updating note", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 }
