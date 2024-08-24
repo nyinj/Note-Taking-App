@@ -26,6 +26,7 @@ public class EditNoteActivity extends AppCompatActivity {
         titleInput = findViewById(R.id.titleinput);
         descriptionInput = findViewById(R.id.descriptioninput);
         MaterialButton saveBtn = findViewById(R.id.savebtn);
+        MaterialButton backbtn = findViewById(R.id.backbtn);
 
         // Retrieve noteId from intent
         noteId = getIntent().getLongExtra("NOTE_ID", -1);
@@ -53,6 +54,14 @@ public class EditNoteActivity extends AppCompatActivity {
                 finish(); // Return to MainActivity
             } else {
                 Toast.makeText(getApplicationContext(), "Error updating note", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Close the current activity
+                finish();
             }
         });
 

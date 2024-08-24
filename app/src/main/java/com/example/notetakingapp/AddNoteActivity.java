@@ -21,6 +21,7 @@ public class AddNoteActivity extends AppCompatActivity {
         EditText titleInput = findViewById(R.id.titleinput);
         EditText descriptionInput = findViewById(R.id.descriptioninput);
         MaterialButton saveBtn = findViewById(R.id.savebtn);
+        MaterialButton backbtn = findViewById(R.id.backbtn);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -48,6 +49,14 @@ public class AddNoteActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Error saving note", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Close the current activity
+                finish();
             }
         });
     }

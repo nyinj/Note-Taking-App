@@ -34,7 +34,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="#a5d6a7"
+            android:background="#2d2f30"
+            android:textColor="@color/white"
+            android:textColorHint="#7AFFFFFF"
             android:hint="Title"
             android:padding="10dp" />
 
@@ -43,7 +45,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="#a5d6a7"
+            android:background="#2d2f30"
+            android:textColor="@color/white"
+            android:textColorHint="#7AFFFFFF"
             android:gravity="top"
             android:hint="Description"
             android:lines="10"
@@ -54,13 +58,16 @@
     <LinearLayout
         android:layout_width="337dp"
         android:layout_height="70dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/backbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="20dp"
             android:backgroundTint="@color/white"
             android:text="Back"
             android:textColor="#2d2f30" />
@@ -71,6 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/white"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="20dp"
             android:text="Save"
             android:textColor="#2d2f30" />
     </LinearLayout>
