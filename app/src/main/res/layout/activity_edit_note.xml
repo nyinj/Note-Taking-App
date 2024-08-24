@@ -35,7 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="#a5d6a7"
+            android:background="#2d2f30"
+            android:textColor="@color/white"
+            android:textColorHint="#7AFFFFFF"
             android:hint="Title"
             android:padding="10dp" />
 
@@ -44,7 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="#a5d6a7"
+            android:background="#2d2f30"
+            android:textColor="@color/white"
+            android:textColorHint="#7AFFFFFF"
             android:gravity="top"
             android:hint="Description"
             android:lines="10"
